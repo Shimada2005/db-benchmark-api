@@ -5,11 +5,16 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
+
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
 
 func ConnectPostgres() (*sql.DB, error) {
+
+	godotenv.Load()
+
 	connStr := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("POSTGRES_HOST"),
