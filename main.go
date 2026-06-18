@@ -34,5 +34,8 @@ func main() {
 	// mysql
 	r.GET("/mysql/count", handlers.MySQLCount)
 
+	// benchmark
+	r.GET("/benchmark/count", handlers.BenchmarkCount)
+
 	r.Run(":8080")
 }
