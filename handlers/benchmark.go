@@ -55,3 +55,58 @@ func BenchmarkCount(c *gin.Context) {
 		},
 	})
 }
+
+func BenchmarkSearch(c *gin.Context) {
+
+	country := c.Query("country")
+
+	// PostgreSQL
+	start := time.Now()
+
+	var postgresCount int
+
+	err := PostgresDB.QueryRow(
+		"SELECT COUNT(*) FROM customers WHERE country = $1",
+		country,
+	).Scan(&postgresCount)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	postgresTime := time.Since(start).Milliseconds()
+
+	// MySQL
+	start = time.Now()
+
+	var mysqlCount int
+
+	err = MySQLDB.QueryRow(
+		"SELECT COUNT(*) FROM customers WHERE country = ?",
+		country,
+	).Scan(&mysqlCount)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	mysqlTime := time.Since(start).Milliseconds()
+
+	c.JSON(http.StatusOK, gin.H{
+		"country": country,
+		"postgres": gin.H{
+			"count":   postgresCount,
+			"time_ms": postgresTime,
+		},
+		"mysql": gin.H{
+			"count":   mysqlCount,
+			"time_ms": mysqlTime,
+		},
+	})
+}
