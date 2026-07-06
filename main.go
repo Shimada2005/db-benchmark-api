@@ -37,5 +37,9 @@ func main() {
 	// benchmark
 	r.GET("/benchmark/count", handlers.BenchmarkCount)
 
+	//search
+	r.GET("/postgres/search", handlers.PostgresSearch)
+	r.GET("/mysql/search", handlers.MySQLSearch)
+
 	r.Run(":8080")
 }
