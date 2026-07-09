@@ -41,6 +41,8 @@ func main() {
 	r.GET("/postgres/search", handlers.PostgresSearch)
 	r.GET("/mysql/search", handlers.MySQLSearch)
 	r.GET("/benchmark/search", handlers.BenchmarkSearch)
+	r.GET("/benchmark/primary", handlers.BenchmarkPrimarySearch)
+	r.GET("/benchmark/crud", handlers.BenchmarkCRUD)
 
 	r.Run(":8080")
 }
